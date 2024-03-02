@@ -1,0 +1,166 @@
+## Principles of Network Applications
+### 2.1.1 Network Application Architectures
+**Overview:**
+- **Architectural Planning:** Before starting software coding, it's crucial to have a comprehensive architectural plan for the application.
+- **Distinction Between Architectures:** Understand the difference between application architecture and network architecture.
+- **Fixed Network Architecture:** From the developer's perspective, the network architecture is fixed and provides specific services to applications.
+
+**Client-Server Architecture:**
+- **Definition:** Involves an always-on host (server) servicing requests from many clients.
+- **Communication Pattern:** Clients don't communicate directly with each other; all communication is routed through the server.
+- **Server Characteristics:** Has a fixed, well-known IP address and is always on.
+- **Examples:** Web applications, FTP, Telnet, email.
+- **Challenge:** Single-server hosts may struggle with handling a large number of client requests.
+
+**Data Centers in Client-Server Architecture:**
+- **Scaling:** To handle numerous requests, data centers with a large number of hosts are often used to create a powerful virtual server.
+- **Examples:** Popular internet services like search engines, e-commerce, web-based email, and social media often run in data centers.
+
+**Peer-to-Peer (P2P) Architecture:**
+- **Definition:** Involves minimal reliance on dedicated servers; communication occurs directly between intermittently connected hosts (peers).
+- **Peers:** Desktops and laptops controlled by users, residing in homes, universities, and offices.
+- **Example:** BitTorrent for file-sharing.
+- **Self-Scalability:** Peers not only generate workload but also add service capacity by distributing files to other peers.
+- **Cost-Effectiveness:** Typically doesn't require significant server infrastructure and server bandwidth.
+- **Challenges:** Face issues of security, performance, and reliability due to their highly decentralized structure.
+
+**Conclusion:**
+- **Choice of Architecture:** Application developers often choose between client-server and P2P architectures based on the specific needs and characteristics of their applications.
+- **Considerations:** Each architecture has its advantages and challenges, and the choice depends on factors like scalability, cost, and desired communication patterns.
+- 
+### Processes Communicaion
+
+**Understanding Communication Between Processes:**
+- In network applications, understanding how programs running in multiple end systems communicate is essential.
+- Operating systems distinguish between programs and processes; processes communicate with each other.
+- Processes on the same end system can communicate using interprocess communication governed by the operating system.
+- Focus in this book is on processes running on different hosts with potentially different operating systems.
+
+**Communication Between Processes:**
+- Processes on different end systems communicate by exchanging messages across the computer network.
+- Processes communicating with each other reside in the application layer of the five-layer protocol stack.
+
+**Client and Server Processes:**
+- A network application consists of pairs of processes sending messages to each other over a network.
+- Examples: Web application (browser process with a Web server process), P2P file-sharing system.
+- Labeling: Typically, one process is labeled as the client, and the other as the server in a communication session.
+- In P2P applications, a process can be both a client and a server, but roles can be defined for specific communication sessions.
+
+**Interface Between Process and Computer Network:**
+- Most applications involve pairs of communicating processes; messages go through the network.
+- Communication occurs through a software interface called a socket.
+- Analogy: Process is like a house, and the socket is like its door; messages are sent out and received through the socket.
+- Socket is the interface between the application layer and the transport layer within a host.
+
+**Socket Communication and Transport Protocol:**
+- Socket is the Application Programming Interface (API) between the application and the network.
+- Application developer controls the application-layer side of the socket but has limited control of the transport-layer side.
+- Application developer's control on the transport layer includes choosing the transport protocol and fixing some parameters.
+
+**Addressing Processes:**
+- Similar to sending postal mail, processes need addresses.
+- In the Internet, the host is identified by its IP address (32-bit).
+- The receiving process is identified by a destination port number; popular applications have assigned specific port numbers.
+- Examples: Web server (port 80), mail server (port 25).
+- Detailed examination of IP addresses and port numbers will be covered in later chapters.
+- 
+
+### 2.1.4 Transport Services Available to Applications
+
+**Introduction to Socket and Transport-Layer Protocols:**
+- A socket is the interface between the application process and the transport-layer protocol.
+- At the sending side, the application pushes messages through the socket, and the transport-layer protocol is responsible for getting messages to the socket at the receiving side.
+- Networks, including the Internet, often support multiple transport-layer protocols.
+
+**Choosing a Transport-Layer Protocol:**
+- When developing an application, the choice of a transport-layer protocol is crucial.
+- Analogous to choosing transportation modes for travel, each transport protocol offers different services.
+- Developers study services provided by available transport-layer protocols and choose based on the best match for the application's needs.
+
+**Services Provided by Transport-Layer Protocols:**
+- **Reliable Data Transfer:**
+  - Some applications require guaranteed data delivery to prevent data loss.
+  - Reliable data transfer ensures that data sent by one end is delivered correctly and completely to the other end.
+  - Important for applications like electronic mail, file transfer, remote host access, and financial applications.
+
+- **Throughput:**
+  - Refers to the rate at which the sending process can deliver bits to the receiving process.
+  - Guaranteed available throughput at a specified rate is a desirable service.
+  - Bandwidth-sensitive applications have specific throughput requirements, while elastic applications adapt to available throughput.
+
+- **Timing:**
+  - Transport-layer protocols can provide timing guarantees, crucial for interactive real-time applications.
+  - Examples include ensuring bits arrive at the receiver's socket within a specified time frame.
+  - Important for applications like Internet telephony, virtual environments, teleconferencing, and multiplayer games.
+
+- **Security:**
+  - Transport protocols can offer security services, including encryption and decryption of transmitted data.
+  - Confidentiality services ensure that even if data is observed between sending and receiving processes, it remains secure.
+  - Other security services beyond confidentiality are also possible.
+  - 
+### 2.1.4 Transport Services Provided by Internet
+
+**Summary and Detailed Notes:**
+
+**Transport Services in Internet Protocols:**
+- Internet provides two transport protocols to applications: UDP and TCP.
+- Decision between UDP and TCP is crucial when developing a new network application.
+
+**TCP Services:**
+- **Connection-oriented Service:**
+  - TCP involves a handshaking procedure before application-level messages start flowing.
+  - Full-duplex connection, allowing simultaneous message exchange between processes.
+  - Connection teardown after the application finishes sending messages.
+
+- **Reliable Data Transfer Service:**
+  - TCP ensures all data sent is delivered without error and in the proper order.
+  - Includes a congestion-control mechanism for the general welfare of the Internet.
+
+**UDP Services:**
+- UDP is a lightweight transport protocol with minimal services.
+- **Connectionless:**
+  - No handshaking before processes start communication.
+- **Unreliable Data Transfer:**
+  - No guarantee that messages will reach the receiving process, and messages may arrive out of order.
+
+**Security in TCP:**
+- Neither TCP nor UDP provides encryption.
+- Transport Layer Security (TLS) enhances TCP with encryption, data integrity, and endpoint authentication.
+- TLS is implemented in the application layer and requires TLS code in both client and server sides.
+
+**UDP Characteristics:**
+- No congestion-control mechanism in UDP; sending side can pump data into the network layer at any rate.
+- Sending side of UDP can send data at any rate, but actual end-to-end throughput may be less due to limited transmission capacity or congestion.
+
+**Services Not Provided by Internet Transport Protocols:**
+- Organized transport protocol services along four dimensions: reliable data transfer, throughput, timing, and security.
+- TCP and UDP provide reliable data transfer but lack throughput and timing guarantees.
+- Internet can often provide satisfactory service to time-sensitive applications but cannot guarantee timing or throughput.
+
+**Transport Protocols in Popular Internet Applications:**
+- E-mail, remote terminal access, the web, and file transfer use TCP primarily for reliable data transfer.
+- Streaming multimedia and Internet telephony applications may use UDP to avoid TCP's congestion control but may fall back to TCP if UDP communication fails due to firewall configurations.
+- 
+### Application-Layer Protocol
+**Introduction to Application-Layer Protocols:**
+- Network processes communicate by sending messages into sockets.
+- Application-layer protocols define how processes on different end systems pass messages.
+- Components of an application-layer protocol include types of messages, syntax, semantics, and rules for sending and responding.
+
+**Public and Proprietary Application-Layer Protocols:**
+- Some application-layer protocols are public domain and specified in RFCs (e.g., HTTP for the Web).
+- Others are proprietary and intentionally not available publicly (e.g., Skype's application-layer protocols).
+
+**Distinction between Network Applications and Application-Layer Protocols:**
+- An application-layer protocol is a piece of a network application but not the entire application.
+- Example: HTTP is the application-layer protocol for the Web application.
+
+**Focus on Pervasive and Important Applications:**
+- Instead of an encyclopedic approach, the book focuses on a few important applications.
+- Covered applications include the Web, electronic mail, directory service (DNS), video streaming, and P2P applications.
+
+**Applications Covered in This Chapter:**
+1. **The Web (HTTP):** Discusses HTTP as it is straightforward and essential.
+2. **Electronic Mail (E-mail):** Describes the Internet's first killer application, which involves several application-layer protocols.
+3. **Directory Service (DNS):** Provides a directory service for the Internet, demonstrating how core network functionality can be implemented at the application layer.
+4. **Video Streaming and P2P Applications:** Covers P2P file sharing and video streaming on demand, including content distribution networks.
